@@ -1,24 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from "./views/admin/home";
+import Payment from "./views/admin/Payment";
+import Shipping from "./views/admin/Shipping";
+import Admin from "./views/admin/Admin";
+import Customer from "./views/admin/Customer";
+import Brand from "./views/admin/Brand";
+import Category from "./views/admin/Category";
+import Color from "./views/admin/Color";
+import Discount from "./views/admin/Discount";
+import Voucher from "./views/admin/Voucher";
+import Order from "./views/admin/Order";
+import Product from "./views/admin/Product";
+
+import Test from "./views/admin/test";
+import Login from "./views/login";
+import Profile from "./views/admin/profile";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/payment" element={<Payment />} />
+        <Route path="/shipping" element={<Shipping />} />
+        <Route path="/admin" element={<Admin />} />
+        <Route path="/customer" element={<Customer />} />
+        <Route path="/brand" element={<Brand />} />
+        <Route path="/color" element={<Color />} />
+        <Route path="/discount" element={<Discount />} />
+        <Route path="/voucher" element={<Voucher />} />
+        <Route path="/order" element={<Order />} />
+        <Route path="/category" element={<Category />} />
+        <Route path="/product" element={<Product />} />
+        <Route path="/test" element={<Test />} />
+        <Route path="/profile" element={<Profile />} />
+      </Routes>
+    </Router>
   );
 }
 
