@@ -8,6 +8,15 @@ import Footer from "./components/footer";
 import ImageUploader from "./components/ImageUploader";
 
 function Profile() {
+
+    const handleScrollToTop = (e) => {
+        e.preventDefault();
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+
     return (
         <div id="wrapper">
             <div id="content-wrapper" className="d-flex flex-column">
@@ -111,9 +120,9 @@ function Profile() {
                 </div>
             </div>
             {/* Scroll to top */}
-            <a className="scroll-to-top rounded" href="#page-top">
-                <i className="fas fa-angle-up" />
-            </a>
+            <a href="#page-top" className="scroll-to-top rounded" onClick={handleScrollToTop}>
+                    <i className="fas fa-angle-up" />
+                </a>
         </div>
     );
 }

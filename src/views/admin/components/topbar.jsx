@@ -443,7 +443,7 @@ const Topbar = () => {
                         <div className="dropdown-divider" />
                         <Link
                             className="dropdown-item"
-                            to={"login"}
+                            to={"/login"}
                             data-toggle="modal"
                             data-target="#logoutModal"
                         >
