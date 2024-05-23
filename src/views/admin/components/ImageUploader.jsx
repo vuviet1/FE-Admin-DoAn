@@ -54,7 +54,6 @@ const ImageUploader = () => {
                         src={URL.createObjectURL(selectedFile)}
                         height={200}
                         width={200}
-                        roundedCircle
                     />
                     <button
                         type="button"

@@ -7,20 +7,20 @@ import Topbar from "../components/topbar"
 import Footer from "../components/footer"
 import request from "../../../utils/request"
 
-import AddPaymentModal from "./modal-add"
-import EditPaymentModal from "./modal-edit"
+import AddSizeModal from "./modal-add"
+import EditSizeModal from "./modal-edit"
 
-function Payment() {
-    const [payments, setPayments] = useState([])
-    const [selectedPaymentId, setSelectedPaymentId] = useState(null)
+function Size() {
+    const [sizes, setSizes] = useState([])
+    const [selectedSizeId, setSelectedSizeId] = useState(null)
     const [showAddModal, setShowAddModal] = useState(false)
     const [showEditModal, setShowEditModal] = useState(false)
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await request.get("payment")
-                setPayments(response.data.data)
+                const response = await request.get("size")
+                setSizes(response.data.data)
             } catch (error) {
                 console.error("Error fetching data:", error)
             }
@@ -30,7 +30,7 @@ function Payment() {
 
     useEffect(() => {
         let table
-        if (payments && payments.length > 0) {
+        if (sizes && sizes.length > 0) {
             table = database.initializeDataTable("#dataTableHover")
         }
         return () => {
@@ -38,38 +38,37 @@ function Payment() {
                 table.destroy()
             }
         }
-    }, [payments])
+    }, [sizes])
 
-    const handleEditButtonClick = (payment_method_id) => {
-        setSelectedPaymentId(payment_method_id)
+    const handleEditButtonClick = (size_id) => {
+        setSelectedSizeId(size_id)
         setShowEditModal(true)
     }
 
-    const handleAddPayment = () => {
+    const handleAddSize = () => {
         setShowAddModal(false)
         window.location.reload()
     }
 
-    const handleUpdatePayment = () => {
-        setSelectedPaymentId(null)
+    const handleUpdateSize = () => {
+        setSelectedSizeId(null)
         setShowEditModal(false)
         window.location.reload()
     }
 
-    const deletePayment = async (payment_method_id) => {
-        if (window.confirm("Bạn có chắc muốn xóa phương thức thanh toán này không?")) {
+    const deleteSize = async (size_id) => {
+        if (window.confirm("Bạn có chắc muốn xóa kích thước này không?")) {
             try {
-                await request.delete(`payment/${payment_method_id}`)
+                await request.delete(`size/${size_id}`)
                 window.location.reload() // Reload trang sau khi xóa
             } catch (error) {
-                console.error("Error deleting payment:", error)
+                console.error("Error deleting size:", error)
             }
         }
     }
 
-
-    const PaymentTableBody = ({ payments, handleEditButtonClick, deletePayment }) => {
-        if (!payments || payments.length === 0) {
+    const SizeTableBody = ({ sizes, handleEditButtonClick, deleteSize }) => {
+        if (!sizes || sizes.length === 0) {
             return (
                 <tr>
                     <td colSpan="4" style={{ textAlign: "center" }}>
@@ -81,29 +80,29 @@ function Payment() {
 
         return (
             <tbody>
-                {payments.map((payment, index) => (
+                {sizes.map((size, index) => (
                     <tr key={index}>
-                        <td style={{ textAlign: "left" }}>{payment.payment_method_id}</td>
-                        <td style={{ textAlign: "left" }}>{payment.payment_method}</td>
+                        <td style={{ textAlign: "left" }}>{size.size_id}</td>
+                        <td style={{ textAlign: "left" }}>{size.size}</td>
                         <td style={{ textAlign: "left" }}>
-                            {payment.status === 1 ? (
+                            {size.status === 1 ? (
                                 <span className="badge badge-success">Sử dụng</span>
                             ) : (
                                 <span className="badge badge-danger">Không sử dụng</span>
                             )}
                         </td>
-                        <td style={{ textAlign: "left" }}>{payment.note}</td>
+                        <td style={{ textAlign: "left" }}>{size.note}</td>
                         <td style={{ textAlign: "center" }}>
                             <Button
                                 variant="success"
-                                onClick={() => handleEditButtonClick(payment.payment_method_id)}
+                                onClick={() => handleEditButtonClick(size.size_id)}
                                 style={{ marginRight: "5px" }}
                             >
                                 <i className="far fa-edit" />
                             </Button>
                             <Button
                                 variant="danger"
-                                onClick={() => deletePayment(payment.payment_method_id)}
+                                onClick={() => deleteSize(size.size_id)}
                             >
                                 <i className="fas fa-trash" />
                             </Button>
@@ -123,14 +122,14 @@ function Payment() {
 
                         <div className="container-fluid" id="container-wrapper">
                             <div className="d-sm-flex align-items-center justify-content-between mb-4">
-                                <h1 className="h3 mb-0 text-gray-800">Phương thức thanh toán</h1>
+                                <h1 className="h3 mb-0 text-gray-800">Kích thước</h1>
                                 <ol className="breadcrumb">
                                     <li className="breadcrumb-item">
                                         <Link to={"/"}>Home</Link>
                                     </li>
                                     <li className="breadcrumb-item">Danh mục quản lý</li>
                                     <li className="breadcrumb-item active" aria-current="page">
-                                        Phương thức thanh toán
+                                        Kích thước
                                     </li>
                                 </ol>
                             </div>
@@ -140,7 +139,7 @@ function Payment() {
                                     <div className="card mb-4">
                                         <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                             <h6 className="m-0 font-weight-bold text-primary">
-                                                Phương thức thanh toán
+                                                Kích thước
                                             </h6>
                                             <Button
                                                 variant="primary"
@@ -157,16 +156,16 @@ function Payment() {
                                                 <thead className="thead-light">
                                                     <tr>
                                                         <th style={{ textAlign: "left" }}>Mã</th>
-                                                        <th style={{ textAlign: "left" }}>Tên phương thức</th>
+                                                        <th style={{ textAlign: "left" }}>Kích thước</th>
                                                         <th style={{ textAlign: "left" }}>Trạng thái</th>
                                                         <th style={{ textAlign: "left" }}>Ghi chú</th>
                                                         <th style={{ textAlign: "center" }}>Hành động</th>
                                                     </tr>
                                                 </thead>
-                                                <PaymentTableBody
-                                                    payments={payments}
+                                                <SizeTableBody
+                                                    sizes={sizes}
                                                     handleEditButtonClick={handleEditButtonClick}
-                                                    deletePayment={deletePayment}
+                                                    deleteSize={deleteSize}
                                                 />
                                             </Table>
                                         </div>
@@ -174,13 +173,13 @@ function Payment() {
                                 </div>
                             </div>
 
-                            <AddPaymentModal show={showAddModal} handleClose={() => setShowAddModal(false)} onAddPayment={handleAddPayment} />
-                            {selectedPaymentId && (
-                                <EditPaymentModal
+                            <AddSizeModal show={showAddModal} handleClose={() => setShowAddModal(false)} onAddSize={handleAddSize} />
+                            {selectedSizeId && (
+                                <EditSizeModal
                                     show={showEditModal}
                                     handleClose={() => setShowEditModal(false)}
-                                    selectedPaymentId={selectedPaymentId}
-                                    onUpdatePayment={handleUpdatePayment}
+                                    selectedSizeId={selectedSizeId}
+                                    onUpdateSize={handleUpdateSize}
                                 />
                             )}
                         </div>
@@ -195,4 +194,4 @@ function Payment() {
     )
 }
 
-export default Payment
+export default Size

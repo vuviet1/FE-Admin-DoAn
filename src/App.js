@@ -8,10 +8,12 @@ import Customer from "./views/admin/Customer";
 import Brand from "./views/admin/Brand";
 import Category from "./views/admin/Category";
 import Color from "./views/admin/Color";
+import Size from "./views/admin/Size";
 import Discount from "./views/admin/Discount";
 import Voucher from "./views/admin/Voucher";
 import Order from "./views/admin/Order";
 import Product from "./views/admin/Product";
+import ImageLibrary from "./views/admin/ImageLibrary";
 
 import Test from "./views/admin/test";
 import Login from "./views/login";
@@ -25,6 +27,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/shipping" element={<Shipping />} />
+        <Route path="/size" element={<Size />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/customer" element={<Customer />} />
         <Route path="/brand" element={<Brand />} />
@@ -34,6 +37,8 @@ function App() {
         <Route path="/order" element={<Order />} />
         <Route path="/category" element={<Category />} />
         <Route path="/product" element={<Product />} />
+        <Route path="/image-library" element={<ImageLibrary />} />
+
         <Route path="/test" element={<Test />} />
         <Route path="/profile" element={<Profile />} />
       </Routes>

@@ -141,10 +141,9 @@ function Discount() {
                         <td style={{ textAlign: "center" }}>
                             <button
                                 type="button"
-                                className="btn btn-success"
+                                className="btn btn-success ml-2"
                                 data-toggle="modal"
                                 data-target="#editModal"
-                                style={{ marginRight: "5px" }}
                                 onClick={() =>
                                     handleEditButtonClick(discount.discount_id)
                                 }
@@ -153,7 +152,7 @@ function Discount() {
                             </button>
                             <button
                                 type="button"
-                                className="btn btn-danger"
+                                className="btn btn-danger ml-2"
                                 onClick={() =>
                                     deletediscount(discount.discount_id)
                                 }

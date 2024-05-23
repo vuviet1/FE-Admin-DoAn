@@ -95,11 +95,22 @@ const Topbar = () => {
                             to={"/category"}
                         >
                             <div className="mr-3">
-                                <div className="icon-circle bg-primary">
+                                <div className="icon-circle bg-dark">
                                     <i className="fas fa-clipboard-list text-white" />
                                 </div>
                             </div>
                             <div>Danh mục</div>
+                        </Link>
+                        <Link
+                            className="dropdown-item d-flex align-items-center"
+                            to={"/image-library"}
+                        >
+                            <div className="mr-3">
+                                <div className="icon-circle bg-danger">
+                                    <i className="far fa-images text-white" />
+                                </div>
+                            </div>
+                            <div>Thư viện ảnh</div>
                         </Link>
                         <Link
                             className="dropdown-item d-flex align-items-center"
@@ -111,6 +122,28 @@ const Topbar = () => {
                                 </div>
                             </div>
                             <div>Màu</div>
+                        </Link>
+                        <Link
+                            className="dropdown-item d-flex align-items-center"
+                            to={"/brand"}
+                        >
+                            <div className="mr-3">
+                                <div className="icon-circle bg-success">
+                                    <i className="fas fa-clinic-medical text-white" />
+                                </div>
+                            </div>
+                            <div>Thương hiệu</div>
+                        </Link>
+                        <Link
+                            className="dropdown-item d-flex align-items-center"
+                            to={"/size"}
+                        >
+                            <div className="mr-3">
+                                <div className="icon-circle bg-primary">
+                                    <i className="fas fa-sort-amount-up text-white" />
+                                </div>
+                            </div>
+                            <div>Số đo</div>
                         </Link>
                         <Link
                             className="dropdown-item d-flex align-items-center"
@@ -134,17 +167,7 @@ const Topbar = () => {
                             </div>
                             <div>Sản phẩm khuyến mãi</div>
                         </Link>
-                        <Link
-                            className="dropdown-item d-flex align-items-center"
-                            to={"/brand"}
-                        >
-                            <div className="mr-3">
-                                <div className="icon-circle bg-success">
-                                    <i className="fas fa-clinic-medical text-white" />
-                                </div>
-                            </div>
-                            <div>Thương hiệu</div>
-                        </Link>
+                        
                     </div>
                 </li>
                 <li className="nav-item dropdown no-arrow mx-1">

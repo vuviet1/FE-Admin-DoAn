@@ -90,7 +90,7 @@ function Admin() {
                                                     <td>
                                                         <button
                                                             type="button"
-                                                            className="btn btn-info"
+                                                            className="btn btn-info ml-2"
                                                             data-toggle="modal"
                                                             data-target="#editModal"
                                                         >
@@ -98,7 +98,7 @@ function Admin() {
                                                         </button>
                                                         <button
                                                             type="button"
-                                                            className="btn btn-success"
+                                                            className="btn btn-success ml-2"
                                                             data-toggle="modal"
                                                             data-target="#editModal"
                                                         >
@@ -106,7 +106,7 @@ function Admin() {
                                                         </button>
                                                         <button
                                                             type="submit"
-                                                            className="btn btn-danger"
+                                                            className="btn btn-danger ml-2"
                                                         >
                                                             <i className="fas fa-trash" />
                                                         </button>
