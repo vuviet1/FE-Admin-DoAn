@@ -82,7 +82,6 @@ function Shipping() {
             <tbody>
                 {shippings.map((shipping, index) => (
                     <tr key={index}>
-                        <td style={{ textAlign: "left" }}>{shipping.shipping_method_id}</td>
                         <td style={{ textAlign: "left" }}>{shipping.shipping_method}</td>
                         <td style={{ textAlign: "left" }}>
                             {shipping.status === 1 ? (
@@ -155,7 +154,6 @@ function Shipping() {
                                             >
                                                 <thead className="thead-light">
                                                     <tr>
-                                                        <th style={{ textAlign: "left" }}>Mã</th>
                                                         <th style={{ textAlign: "left" }}>Tên phương thức</th>
                                                         <th style={{ textAlign: "left" }}>Trạng thái</th>
                                                         <th style={{ textAlign: "left" }}>Ghi chú</th>

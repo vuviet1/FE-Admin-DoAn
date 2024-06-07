@@ -82,7 +82,6 @@ function Brand() {
             <tbody>
                 {brands.map((brand, index) => (
                     <tr key={index}>
-                        <td style={{ textAlign: "left" }}>{brand.brand_id}</td>
                         <td style={{ textAlign: "left" }}>{brand.brand_name}</td>
                         <td style={{ textAlign: "left" }}>
                             {brand.status === 1 ? (
@@ -146,7 +145,6 @@ function Brand() {
                                             <Table className="table align-items-center table-flush table-hover" id="dataTableHover">
                                                 <thead className="thead-light">
                                                     <tr>
-                                                        <th style={{ textAlign: "left" }}>Mã</th>
                                                         <th style={{ textAlign: "left" }}>Tên thương hiệu</th>
                                                         <th style={{ textAlign: "left" }}>Trạng thái</th>
                                                         <th style={{ textAlign: "left" }}>Ghi chú</th>

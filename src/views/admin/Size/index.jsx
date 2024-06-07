@@ -82,7 +82,6 @@ function Size() {
             <tbody>
                 {sizes.map((size, index) => (
                     <tr key={index}>
-                        <td style={{ textAlign: "left" }}>{size.size_id}</td>
                         <td style={{ textAlign: "left" }}>{size.size}</td>
                         <td style={{ textAlign: "left" }}>
                             {size.status === 1 ? (
@@ -155,7 +154,6 @@ function Size() {
                                             >
                                                 <thead className="thead-light">
                                                     <tr>
-                                                        <th style={{ textAlign: "left" }}>Mã</th>
                                                         <th style={{ textAlign: "left" }}>Kích thước</th>
                                                         <th style={{ textAlign: "left" }}>Trạng thái</th>
                                                         <th style={{ textAlign: "left" }}>Ghi chú</th>

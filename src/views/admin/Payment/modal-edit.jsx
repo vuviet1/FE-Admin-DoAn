@@ -13,8 +13,8 @@ function EditPaymentModal({ show, handleClose, selectedPaymentId, onUpdatePaymen
         const fetchPayment = async () => {
             try {
                 const response = await request.get(`payment/${selectedPaymentId}`);
-                if (response.data) {
-                    setPayment(response.data);
+                if (response.data.data) {
+                    setPayment(response.data.data);
                 } else {
                     console.error("No data returned from the API");
                 }

@@ -1,81 +1,70 @@
-import React, { useState } from "react";
-import { Image } from "react-bootstrap";
+import React, { useCallback } from 'react';
+import { useDropzone } from 'react-dropzone';
 
-const ImageUploader = () => {
-    const [selectedFile, setSelectedFile] = useState(null);
+function ImageUploader({ images, setImages }) {
+    const onDrop = useCallback(
+        (acceptedFiles) => {
+            const newImages = acceptedFiles.map((file) =>
+                Object.assign(file, {
+                    preview: URL.createObjectURL(file),
+                })
+            );
+            setImages((prevImages) => [...prevImages, ...newImages]);
+        },
+        [setImages]
+    );
 
-    const handleFileChange = (e) => {
-        setSelectedFile(e.target.files[0]);
+    const removeImage = (index) => {
+        setImages((prevImages) => prevImages.filter((_, i) => i !== index));
     };
 
-    const handleDragOver = (e) => {
-        e.preventDefault();
-    };
-
-    const handleDrop = (e) => {
-        e.preventDefault();
-        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-            setSelectedFile(e.dataTransfer.files[0]);
-            e.dataTransfer.clearData();
-        }
-    };
-
-    const handleRemoveImage = () => {
-        setSelectedFile(null);
-    };
-
-    const triggerFileInput = () => {
-        document.getElementById("fileInput").click();
-    };
+    const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
     return (
-        <div className="drag-area"
-            onDragOver={handleDragOver}
-            onDrop={handleDrop}
-            onClick={triggerFileInput}
-            style={{
-                border: "2px dashed #cccccc",
-                padding: "20px",
-                textAlign: "center",
-                borderRadius: "10px",
-                cursor: "pointer",
-                height: "300px",
-                width: "300px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "column",
-                margin: "0 auto",
-            }}
-        >
-            {selectedFile ? (
-                <div>
-                    <Image
-                        src={URL.createObjectURL(selectedFile)}
-                        height={200}
-                        width={200}
-                    />
-                    <button
-                        type="button"
-                        className="btn btn-danger mt-2"
-                        onClick={handleRemoveImage}
-                    >
-                        Bỏ ảnh
-                    </button>
-                </div>
-            ) : (
-                <p>Kéo và Thả để Tải ảnh lên hoặc Chọn ảnh</p>
-            )}
-            <input
-                type="file"
-                id="fileInput"
-                style={{
-                    display: "none",
-                }}
-                onChange={handleFileChange}
-            />
+        <div>
+            <div
+                {...getRootProps({
+                    className: 'dropzone',
+                    style: {
+                        border: '2px dashed #cccccc',
+                        padding: '20px',
+                        textAlign: 'center',
+                        cursor: 'pointer',
+                    },
+                })}
+            >
+                <input {...getInputProps()} />
+                <p>Kéo và thả hình ảnh vào đây, hoặc nhấp để chọn tệp</p>
+            </div>
+            <div className="preview" style={{ display: 'flex', flexWrap: 'wrap', marginTop: '20px' }}>
+                {images.map((image, index) => (
+                    <div key={index} style={{ position: 'relative', marginRight: '10px' }}>
+                        <img
+                            src={image.preview}
+                            alt="preview"
+                            style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+                        />
+                        <button
+                            type="button"
+                            onClick={() => removeImage(index)}
+                            style={{
+                                position: 'absolute',
+                                top: '0',
+                                right: '0',
+                                background: 'red',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: '50%',
+                                cursor: 'pointer',
+                            }}
+                        >
+                            &times;
+                        </button>
+                    </div>
+                ))}
+            </div>
         </div>
     );
-};
+}
 
 export default ImageUploader;

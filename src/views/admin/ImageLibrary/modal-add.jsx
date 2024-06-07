@@ -1,60 +1,74 @@
-import React from "react";
-import { Modal, Button, Form } from "react-bootstrap";
-import ImageUploader from "./image-upload";
+import React, { useState } from "react";
+import { Button, Form, Modal, Alert } from "react-bootstrap";
+import ImageUploader from "../components/ImageUploader";
+import request from "../../../utils/request";
 
-function AddImageModal({ show, onHide, title, setTitle, status, setStatus, images, handleDrop, handleRemoveImage, handleSubmit }) {
+function AddImageModal({ show, handleClose, productDetailId, handleAddImage }) {
+    const [images, setImages] = useState([]);
+    const [error, setError] = useState(null);
+    const [successMessage, setSuccessMessage] = useState(null);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError(null);
+        setSuccessMessage(null);
+
+        if (images.length === 0) {
+            setError("Vui lòng chọn ít nhất một hình ảnh.");
+            return;
+        }
+
+        const data = {
+            image: images,
+            product_detail_id: productDetailId,
+        };
+
+        console.log(data);
+        try {
+            const response = await request.post("library", data, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+            handleAddImage()
+            if (response.status === 200) {
+                setSuccessMessage(response.data.message);
+                setImages([]);
+                setTimeout(() => {
+                    setSuccessMessage(null);
+                    handleClose();
+                }, 3000);
+            }
+        } catch (error) {
+            setError("Đã xảy ra lỗi khi tải lên hình ảnh.");
+        }
+    };
+
     return (
-        <Modal show={show} onHide={onHide}>
+        <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Thêm mới ảnh</Modal.Title>
+                <Modal.Title>Thêm Ảnh</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <div className="row">
-                    <div className="col-12 mt-3">
-                        <label htmlFor="inputTitle" className="form-label">Tiêu đề</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="inputTitle"
-                            placeholder="Tiêu đề ảnh ..."
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                        />
-                    </div>
-                    <div className="col-12 mt-3">
-                        <label htmlFor="inputStatus" className="form-label">Trạng thái</label>
-                        <Form.Select
-                            aria-label="Trạng thái"
-                            className="form-control"
-                            id="inputStatus"
-                            value={status}
-                            onChange={(e) => setStatus(e.target.value)}
-                        >
-                            <option value="1">Sử dụng</option>
-                            <option value="2">Không sử dụng</option>
-                        </Form.Select>
-                    </div>
-                    <div className="col-12 mt-3">
-                        <ImageUploader
-                            onDrop={handleDrop}
-                            onRemove={handleRemoveImage}
-                            images={images}
-                        />
-                    </div>
-                </div>
+                {error && <Alert variant="danger">{error}</Alert>}
+                {successMessage && (
+                    <Alert variant="success">{successMessage}</Alert>
+                )}
+                <Form onSubmit={handleSubmit}>
+                    <Form.Group>
+                        <Form.Label>Chọn Ảnh</Form.Label>
+                        <ImageUploader images={images} setImages={setImages} />
+                    </Form.Group>
+                    <Modal.Footer>
+                        <Button variant="outline-primary" onClick={handleClose}>
+                            Hủy bỏ
+                        </Button>
+                        <Button variant="primary" type="submit">
+                            Thêm mới
+                        </Button>
+                    </Modal.Footer>
+                </Form>
             </Modal.Body>
-            <Modal.Footer>
-                <Button variant="secondary" onClick={onHide}>Hủy bỏ</Button>
-                <Button
-                    variant="primary"
-                    onClick={() => {
-                        handleSubmit();
-                        onHide();
-                    }}
-                >
-                    Thêm mới
-                </Button>
-            </Modal.Footer>
         </Modal>
     );
 }

@@ -81,7 +81,6 @@ function Color() {
             <tbody>
                 {colors.map((color, index) => (
                     <tr key={index}>
-                        <td style={{ textAlign: "left" }}>{color.color_id}</td>
                         <td style={{ textAlign: "left" }}>{color.color}</td>
                         <td style={{ textAlign: "left" }}>
                             {color.status === 1 ? (
@@ -159,7 +158,6 @@ function Color() {
                                             <Table className="table align-items-center table-flush table-hover" id="dataTableHover">
                                                 <thead className="thead-light">
                                                     <tr>
-                                                        <th style={{ textAlign: "left" }}>Mã</th>
                                                         <th style={{ textAlign: "left" }}>Tên màu</th>
                                                         <th style={{ textAlign: "left" }}>Trạng thái</th>
                                                         <th style={{ textAlign: "left" }}>Ghi chú</th>

@@ -103,17 +103,6 @@ const Topbar = () => {
                         </Link>
                         <Link
                             className="dropdown-item d-flex align-items-center"
-                            to={"/image-library"}
-                        >
-                            <div className="mr-3">
-                                <div className="icon-circle bg-danger">
-                                    <i className="far fa-images text-white" />
-                                </div>
-                            </div>
-                            <div>Thư viện ảnh</div>
-                        </Link>
-                        <Link
-                            className="dropdown-item d-flex align-items-center"
                             to={"/color"}
                         >
                             <div className="mr-3">
@@ -156,18 +145,6 @@ const Topbar = () => {
                             </div>
                             <div>Mã giảm giá</div>
                         </Link>
-                        <Link
-                            className="dropdown-item d-flex align-items-center"
-                            to={"/discount"}
-                        >
-                            <div className="mr-3">
-                                <div className="icon-circle bg-secondary">
-                                    <i className="fas fa-money-bill-wave text-white" />
-                                </div>
-                            </div>
-                            <div>Sản phẩm khuyến mãi</div>
-                        </Link>
-                        
                     </div>
                 </li>
                 <li className="nav-item dropdown no-arrow mx-1">
@@ -243,44 +220,6 @@ const Topbar = () => {
                 </li>
             </ul>
             <ul className="navbar-nav ml-auto">
-                <li className="nav-item dropdown no-arrow">
-                    <a
-                        className="nav-link dropdown-toggle"
-                        href="#"
-                        id="searchDropdown"
-                        role="button"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                    >
-                        <i className="fas fa-search fa-fw" />
-                    </a>
-                    <div
-                        className="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                        aria-labelledby="searchDropdown"
-                    >
-                        <form className="navbar-search">
-                            <div className="input-group">
-                                <input
-                                    type="text"
-                                    className="form-control bg-light border-1 small"
-                                    placeholder="What do you want to look for?"
-                                    aria-label="Search"
-                                    aria-describedby="basic-addon2"
-                                    style={{ borderColor: "#3f51b5" }}
-                                />
-                                <div className="input-group-append">
-                                    <button
-                                        className="btn btn-primary"
-                                        type="button"
-                                    >
-                                        <i className="fas fa-search fa-sm" />
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </li>
                 <li className="nav-item dropdown no-arrow mx-1">
                     <a
                         className="nav-link dropdown-toggle"

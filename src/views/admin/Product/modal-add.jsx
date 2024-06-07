@@ -1,247 +1,237 @@
-import React, { useEffect, useState } from "react"
-import { Form, Modal, Button, Tab, Nav } from "react-bootstrap"
-import ImageUploader from "../components/ImageUploader"
-import ImageLibrary from "../ImageLibrary/image-upload"
-import request from "../../../utils/request" // Make sure the request utility is correctly imported
+import React, { useEffect, useState } from "react";
+import { Form, Modal, Button } from "react-bootstrap";
+import request from "../../../utils/request";
+import ImageUploader from "../components/ImageUploader";
 
-function AddProductModal({ show, onHide }) {
-    const [selectedImage, setSelectedImage] = useState(null)
-    const [showImageLibrary, setShowImageLibrary] = useState(false)
+function AddProductModal({ show, handleClose, onAddProduct }) {
+    const [brands, setBrands] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [productName, setProductName] = useState("");
+    const [price, setPrice] = useState("");
+    const [discount, setDiscount] = useState("");
+    const [brandId, setBrandId] = useState("");
+    const [categoryId, setCategoryId] = useState("");
+    const [description, setDescription] = useState("");
+    const [note, setNote] = useState("");
+    const [status, setStatus] = useState(1);
 
-    const [brands, setBrands] = useState([])
-    const [categories, setCategories] = useState([])
-    const [colors, setColors] = useState([])
-    const [sizes, setSizes] = useState([])
+    const [images, setImages] = useState([]);
 
     useEffect(() => {
         const fetchBrands = async () => {
             try {
-                const response = await request.get("brand")
-                setBrands(response.data.data)
+                const response = await request.get("brand");
+                setBrands(response.data.data);
             } catch (error) {
-                console.error("Error fetching brands:", error)
+                console.error("Error fetching brands:", error);
             }
-        }
+        };
 
         const fetchCategories = async () => {
             try {
-                const response = await request.get("category")
-                setCategories(response.data.data)
+                const response = await request.get("category");
+                setCategories(response.data.data);
             } catch (error) {
-                console.error("Error fetching categories:", error)
+                console.error("Error fetching categories:", error);
             }
-        }
+        };
 
-        const fetchColors = async () => {
-            try {
-                const response = await request.get("color")
-                console.log(response.data.data)
-                setColors(response.data.data)
-            } catch (error) {
-                console.error("Error fetching colors:", error)
+        fetchBrands();
+        fetchCategories();
+    }, []);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+
+            if (images.length !== 1) {
+                alert("Vui lòng chọn một ảnh duy nhất.");
+                return;
             }
+
+            const productData = {
+                product_name: productName,
+                price: price,
+                brand_id: brandId,
+                category_id: categoryId,
+                description: description,
+                note: note,
+                status: status,
+                discount: discount,
+                image: images[0],
+            };
+            console.log(productData);
+
+            const response = await request.post("product", productData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+            console.log("Product added successfully:", response.data);
+            onAddProduct();
+            setImages([]);
+            handleClose();
+        } catch (error) {
+            console.error("Failed to add product:", error);
         }
-
-        const fetchSizes = async () => {
-            try {
-                const response = await request.get("size")
-                console.log(response.data.data)
-                setSizes(response.data.data)
-            } catch (error) {
-                console.error("Error fetching sizes:", error)
-            }
-        }
-
-        fetchBrands()
-        fetchCategories()
-        fetchColors()
-        fetchSizes()
-    }, [])
-
-    const handleImageSelectFromLibrary = (imageInfo) => {
-        setSelectedImage(imageInfo)
-        setShowImageLibrary(false)
-    }
+    };
 
     return (
         <>
-            <Modal show={show} onHide={onHide} size="xl" centered>
+            <Modal show={show} onHide={handleClose} size="xl" centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Thêm mới sản phẩm</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <h5>Thông tin chung</h5>
-                    <div className="row">
-                        <div className="col-6">
-                            <label htmlFor="inputName" className="form-label">
-                                Tên sản phẩm
-                            </label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="inputName"
-                                placeholder="Tên sản phẩm mới ..."
-                            />
-                            <label htmlFor="inputQuantity" className="form-label">
-                                Số lượng
-                            </label>
-                            <input
-                                type="number"
-                                className="form-control"
-                                id="inputQuantity"
-                                placeholder="Số lượng ..."
-                            />
-                            <label htmlFor="inputPrice" className="form-label">
-                                Giá
-                            </label>
-                            <input
-                                type="number"
-                                className="form-control"
-                                id="inputPrice"
-                                placeholder="Giá sản phẩm ..."
-                            />
-                            <label htmlFor="inputBrand" className="form-label">
-                                Thương hiệu
-                            </label>
-                            <Form.Select
-                                aria-label="Thương hiệu"
-                                className="form-control"
-                                id="inputBrand"
-                            >
-                                {brands.map((brand) => (
-                                    <option key={brand.brand_id} value={brand.brand_id}>{brand.brand_name}</option>
-                                ))}
-                            </Form.Select>
-                            <label htmlFor="inputCategory" className="form-label">
-                                Danh mục
-                            </label>
-                            <Form.Select
-                                aria-label="Danh mục"
-                                className="form-control"
-                                id="inputCategory"
-                            >
-                                {categories.map((category) => (
-                                    <option key={category.category_id} value={category.category_id}>{category.category_name}</option>
-                                ))}
-                            </Form.Select>
+                    <Form onSubmit={handleSubmit}>
+                        <h5>Thông tin chung</h5>
+                        <div className="row">
+                            <div className="col-6">
+                                <Form.Group controlId="inputImage">
+                                    <Form.Label>Ảnh sản phẩm</Form.Label>
+                                    <ImageUploader
+                                        images={images} setImages={setImages}
+                                    />
+                                </Form.Group>
+                            </div>
+                            <div className="col-6">
+                                <Form.Group controlId="inputName">
+                                    <Form.Label>Tên sản phẩm</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Tên sản phẩm mới ..."
+                                        value={productName}
+                                        onChange={(e) =>
+                                            setProductName(e.target.value)
+                                        }
+                                    />
+                                </Form.Group>
+                                <Form.Group controlId="inputPrice">
+                                    <Form.Label>Giá</Form.Label>
+                                    <Form.Control
+                                        type="number"
+                                        placeholder="Giá sản phẩm ..."
+                                        value={price}
+                                        onChange={(e) =>
+                                            setPrice(e.target.value)
+                                        }
+                                    />
+                                </Form.Group>
+                                <Form.Group controlId="inputDiscount">
+                                    <Form.Label>Khuyến mãi</Form.Label>
+                                    <Form.Control
+                                        type="number"
+                                        placeholder="Khuyến mãi ..."
+                                        value={discount}
+                                        onChange={(e) =>
+                                            setDiscount(e.target.value)
+                                        }
+                                    />
+                                </Form.Group>
+                                <Form.Group controlId="inputBrand">
+                                    <Form.Label>Thương hiệu</Form.Label>
+                                    <Form.Control
+                                        as="select"
+                                        value={brandId}
+                                        onChange={(e) =>
+                                            setBrandId(e.target.value)
+                                        }
+                                    >
+                                        <option value="">
+                                            Chọn thương hiệu
+                                        </option>
+                                        {brands.map((brand) => (
+                                            <option
+                                                key={brand.brand_id}
+                                                value={brand.brand_id}
+                                            >
+                                                {brand.brand_name}
+                                            </option>
+                                        ))}
+                                    </Form.Control>
+                                </Form.Group>
+                                <Form.Group controlId="inputCategory">
+                                    <Form.Label>Danh mục</Form.Label>
+                                    <Form.Control
+                                        as="select"
+                                        value={categoryId}
+                                        onChange={(e) =>
+                                            setCategoryId(e.target.value)
+                                        }
+                                    >
+                                        <option value="">Chọn danh mục</option>
+                                        {categories.map((category) => (
+                                            <option
+                                                key={category.category_id}
+                                                value={category.category_id}
+                                            >
+                                                {category.category_name}
+                                            </option>
+                                        ))}
+                                    </Form.Control>
+                                </Form.Group>
+                                <Form.Group controlId="status">
+                                    <Form.Label>Trạng thái</Form.Label>
+                                    <Form.Control
+                                        as="select"
+                                        value={status}
+                                        onChange={(e) =>
+                                            setStatus(e.target.value)
+                                        }
+                                    >
+                                        <option value="1">Sử dụng</option>
+                                        <option value="0">Không sử dụng</option>
+                                    </Form.Control>
+                                </Form.Group>
+                            </div>
+                            <div className="col-12">
+                                <Form.Group controlId="inputDescription">
+                                    <Form.Label>Mô tả</Form.Label>
+                                    <Form.Control
+                                        as="textarea"
+                                        rows={5}
+                                        placeholder="Mô tả sản phẩm ..."
+                                        value={description}
+                                        onChange={(e) =>
+                                            setDescription(e.target.value)
+                                        }
+                                    />
+                                </Form.Group>
+                            </div>
+
+                            <div className="col-12">
+                                <Form.Group controlId="inputNote">
+                                    <Form.Label>Ghi chú</Form.Label>
+                                    <Form.Control
+                                        as="textarea"
+                                        rows={3}
+                                        placeholder="Ghi chú ..."
+                                        value={note}
+                                        onChange={(e) =>
+                                            setNote(e.target.value)
+                                        }
+                                    />
+                                </Form.Group>
+                            </div>
                         </div>
-                        <div className="col-6">
-                            <label htmlFor="inputDescription" className="form-label">
-                                Mô tả
-                            </label>
-                            <textarea
-                                className="form-control"
-                                id="inputDescription"
-                                rows={5}
-                                placeholder="Mô tả sản phẩm ..."
-                            />
-                            <label htmlFor="inputNote" className="form-label">
-                                Ghi chú
-                            </label>
-                            <textarea
-                                className="form-control"
-                                id="inputNote"
-                                rows={3}
-                                placeholder="Ghi chú ..."
-                            />
-                        </div>
-                    </div>
-                    <hr />
-                    <h5>Thông tin chi tiết</h5>
-                    <div className="row">
-                        <div className="col-6">
-                            <Tab.Container id="left-tabs-example" defaultActiveKey="upload">
-                                <Nav variant="tabs">
-                                    <Nav.Item>
-                                        <Nav.Link eventKey="upload">Tải ảnh lên</Nav.Link>
-                                    </Nav.Item>
-                                    <Nav.Item>
-                                        <Nav.Link eventKey="library">Chọn từ thư viện</Nav.Link>
-                                    </Nav.Item>
-                                </Nav>
-                                <Tab.Content>
-                                    <Tab.Pane eventKey="upload">
-                                        <div className="row mt-3">
-                                            <div className="col-12">
-                                                <ImageUploader />
-                                            </div>
-                                        </div>
-                                    </Tab.Pane>
-                                    <Tab.Pane eventKey="library">
-                                        <div className="row mt-3">
-                                            <div className="col-12">
-                                                <Button
-                                                    variant="secondary"
-                                                    onClick={() => setShowImageLibrary(true)}
-                                                >
-                                                    Chọn ảnh từ thư viện
-                                                </Button>
-                                                {selectedImage && (
-                                                    <div>
-                                                        <img
-                                                            src={selectedImage.url}
-                                                            alt={selectedImage.title}
-                                                            style={{ maxWidth: "100%", marginTop: "10px" }}
-                                                        />
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </div>
-                                    </Tab.Pane>
-                                </Tab.Content>
-                            </Tab.Container>
-                        </div>
-                        <div className="col-6">
-                            <label htmlFor="inputColor" className="form-label">
-                                Màu sắc
-                            </label>
-                            <Form.Select
-                                aria-label="Màu sắc"
-                                className="form-control"
-                                id="inputColor"
+                        <hr />
+                        <Modal.Footer>
+                            <Button
+                                variant="outline-primary"
+                                onClick={handleClose}
                             >
-                                {colors.map((color) => (
-                                    <option key={color.color_id} value={color.color_id}>{color.color}</option>
-                                ))}
-                            </Form.Select>
-                            <label htmlFor="inputSize" className="form-label">
-                                Kích thước
-                            </label>
-                            <Form.Select
-                                aria-label="Kích thước"
-                                className="form-control"
-                                id="inputSize"
-                            >
-                                {sizes.map((size) => (
-                                    <option key={size.size_id} value={size.size_id}>{size.size}</option>
-                                ))}
-                            </Form.Select>
-                        </div>
-                    </div>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="outline-primary" onClick={onHide}>
-                        Hủy bỏ
-                    </Button>
-                    <Button variant="primary">
-                        Thêm mới
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-            <Modal
-                show={showImageLibrary}
-                onHide={() => setShowImageLibrary(false)}
-                size="lg"
-            >
-                <Modal.Header closeButton>
-                    <Modal.Title>Chọn ảnh từ thư viện</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <ImageLibrary onImageSelect={handleImageSelectFromLibrary} />
+                                Hủy bỏ
+                            </Button>
+                            <Button variant="primary" type="submit">
+                                Thêm mới
+                            </Button>
+                        </Modal.Footer>
+                    </Form>
                 </Modal.Body>
             </Modal>
         </>
-    )
+    );
 }
 
-export default AddProductModal
+export default AddProductModal;

@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from "react";
-import { Form } from "react-bootstrap";
+import React, { useState } from "react";
+import { Form, Image } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 import Topbar from "./components/topbar";
@@ -8,14 +8,15 @@ import Footer from "./components/footer";
 import ImageUploader from "./components/ImageUploader";
 
 function Profile() {
+    const [images, setImages] = useState([]);
 
     const handleScrollToTop = (e) => {
         e.preventDefault();
         window.scrollTo({
             top: 0,
-            behavior: 'smooth'
+            behavior: "smooth",
         });
-    }
+    };
 
     return (
         <div id="wrapper">
@@ -28,12 +29,17 @@ function Profile() {
                     {/* Container Fluid*/}
                     <div className="container-fluid" id="container-wrapper">
                         <div className="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h1 className="h3 mb-0 text-gray-800">Trang cá nhân</h1>
+                            <h1 className="h3 mb-0 text-gray-800">
+                                Trang cá nhân
+                            </h1>
                             <ol className="breadcrumb">
                                 <li className="breadcrumb-item">
                                     <Link to={"/"}>Trang chủ</Link>
                                 </li>
-                                <li className="breadcrumb-item active" aria-current="page">
+                                <li
+                                    className="breadcrumb-item active"
+                                    aria-current="page"
+                                >
                                     Trang cá nhân
                                 </li>
                             </ol>
@@ -49,48 +55,88 @@ function Profile() {
                                     </div>
                                     <div className="card-body">
                                         <div className="row">
-                                            <div className="col-md-4">
-                                                <label htmlFor="profileImg" className="form-label">
+                                            <div className="col-md-4" style={{ display:"ruby" }}>
+                                                <label
+                                                    htmlFor="profileImg"
+                                                    className="form-label"
+                                                >
                                                     Ảnh đại diện
                                                 </label>
-                                                <ImageUploader />
+                                                <ImageUploader
+                                                    images={images}
+                                                    setImages={setImages}
+                                                />
+                                                <Image
+                                                    src={
+                                                        "http://127.0.0.1:8000/uploads/product/" 
+                                                        // + user.image
+                                                    }
+                                                    // alt={user.name}
+                                                    style={{
+                                                        width: "250px",
+                                                        height: "250px",
+                                                    }}
+                                                    fluid
+                                                />
                                             </div>
                                             <div className="col-md-8">
                                                 <Form>
                                                     <Form.Group controlId="profileName">
-                                                        <Form.Label>Tên</Form.Label>
+                                                        <Form.Label>
+                                                            Tên
+                                                        </Form.Label>
                                                         <Form.Control
                                                             type="text"
                                                             placeholder="Tên của bạn ..."
                                                         />
                                                     </Form.Group>
 
-                                                    <Form.Group controlId="profileEmail" className="mt-3">
-                                                        <Form.Label>Email</Form.Label>
+                                                    <Form.Group
+                                                        controlId="profileEmail"
+                                                        className="mt-3"
+                                                    >
+                                                        <Form.Label>
+                                                            Email
+                                                        </Form.Label>
                                                         <Form.Control
                                                             type="email"
                                                             placeholder="Email của bạn ..."
                                                         />
                                                     </Form.Group>
 
-                                                    <Form.Group controlId="profilePhone" className="mt-3">
-                                                        <Form.Label>Số điện thoại</Form.Label>
+                                                    <Form.Group
+                                                        controlId="profilePhone"
+                                                        className="mt-3"
+                                                    >
+                                                        <Form.Label>
+                                                            Số điện thoại
+                                                        </Form.Label>
                                                         <Form.Control
                                                             type="tel"
                                                             placeholder="Số điện thoại của bạn ..."
                                                         />
                                                     </Form.Group>
 
-                                                    <Form.Group controlId="profileAddress" className="mt-3">
-                                                        <Form.Label>Địa chỉ</Form.Label>
+                                                    <Form.Group
+                                                        controlId="profileAddress"
+                                                        className="mt-3"
+                                                    >
+                                                        <Form.Label>
+                                                            Địa chỉ
+                                                        </Form.Label>
                                                         <Form.Control
                                                             type="text"
                                                             placeholder="Địa chỉ của bạn ..."
                                                         />
                                                     </Form.Group>
 
-                                                    <Form.Group controlId="profileNotes" className="mt-3">
-                                                        <Form.Label>Ghi chú</Form.Label>
+                                                    <Form.Group
+                                                        controlId="profileNotes"
+                                                        className="mt-3"
+                                                    >
+                                                        <Form.Label>
+                                                            Ghi chú
+                                                        </Form.Label>
                                                         <Form.Control
                                                             as="textarea"
                                                             rows={3}
@@ -120,9 +166,13 @@ function Profile() {
                 </div>
             </div>
             {/* Scroll to top */}
-            <a href="#page-top" className="scroll-to-top rounded" onClick={handleScrollToTop}>
-                    <i className="fas fa-angle-up" />
-                </a>
+            <a
+                href="#page-top"
+                className="scroll-to-top rounded"
+                onClick={handleScrollToTop}
+            >
+                <i className="fas fa-angle-up" />
+            </a>
         </div>
     );
 }
